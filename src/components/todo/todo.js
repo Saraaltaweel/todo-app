@@ -1,49 +1,59 @@
-import React, { useEffect, useState ,useContext} from 'react';
+import React, { useEffect, useState } from 'react';
 import useForm from '../../hooks/form.js';
 import List from '../list';
 import FormInfo from '../formInfo';
-import { ListContext } from '../../context/ListContext.js';
-import SettingsContext from '../../context/SettingContext.js';
+
 import { v4 as uuid } from 'uuid';
 
-function ToDo (props) {
+const ToDo = () => {
 
-  const listContext=useContext(ListContext)
-  const [state, setState] = useState([]);
+  const [list, setList] = useState([]);
+  const [incomplete, setIncomplete] = useState([]);
+  const { handleChange, handleSubmit } = useForm(addItem);
 
-  // const [list, setList] = useState([]);
-  // const [incomplete, setIncomplete] = useState([]);
-  // const { handleChange, handleSubmit } = useForm(addItem);
-
+  function addItem(item) {
+    console.log(item);
+    item.id = uuid();
+    item.complete = false;
+    setList([...list, item]);
+  }
 
   function deleteItem(id) {
     const items = list.filter( item => item.id !== id );
     setList(items);
   }
 
-  useEffect(()=>{
-    let localSetting=localStorage.getItem('settings')===true;
-    if(localSetting){
-      localSetting=JSON.parse(localStorage.getItem('settings'))
-      SettingsContext.setSettings(localSetting.items,localSetting.view)
-    }
- 
-  },[])
+  function toggleComplete(id) {
+
+    const items = list.map( item => {
+      if ( item.id == id ) {
+        item.complete = ! item.complete;
+      }
+      return item;
+    });
+
+    setList(items);
+
+  }
+
+  useEffect(() => {
+    let incompleteCount = list.filter(item => !item.complete).length;
+    setIncomplete(incompleteCount);
+    document.title = `To Do List: ${incomplete}`;
+  }, [list]);
 
   return (
     <>
       <header>
-        <h2>
-          There are {listContext.list.filter(item => !item.complete).length} Items To Complete
-        </h2>
+        <h1>To Do List: {incomplete} items pending</h1>
       </header>
-        <div>
-          <FormInfo/>
-        </div>
-        <div>
-          <List list={state}/>
-        </div>
+
+     <FormInfo handleChange={handleChange} handleSubmit={handleSubmit}/>
+      <List toggleComplete={toggleComplete} list={list}/>
+
+
     </>
   );
-}
+};
+
 export default ToDo;

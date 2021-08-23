@@ -1,81 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { ListContext } from '../context/ListContext';
-import { SettingContext } from '../context/SettingContext';
-
-function List(props) {
-  const listContext = useContext(ListContext);
-  const settingsContext = useContext(SettingContext);
-  const [page, setpage] = useState(0);
-  const [list, setList] = useState([]);
-  useEffect(() => {
-    if (settingsContext.view) {
-      setList(listContext.list)
-    } else {
-      let temp = [];
-      temp = listContext.list.filter((item) => {
-        if (!item.complete) {
-          return (item);
-        }
-      })
-      setList(temp);
-    }
-  }, [])
-  useEffect(() => {
-    if (settingsContext.view) {
-      setList(listContext.list)
-    } else {
-      let temp = [];
-      temp = listContext.list.filter((item) => {
-        if (!item.complete) {
-          return (item);
-        }
-      })
-      setList(temp);
-    }
-  }, [listContext.list])
-  function nextPage() {
-    settingsContext.nextpage();
-    setpage(page + 1);
-  }
-  function prePage() {
-    settingsContext.previouspage();
-    setpage(page - 1);
-  }
-  function modifyList(id) {
-    listContext.toggleComplete(id);
-    if (settingsContext.view) {
-      setList(listContext.list)
-    } else {
-      let temp = [];
-      temp = listContext.list.filter((item) => {
-        if (!item.complete) {
-          return (item);
-        }
-      })
-      setList(temp);
-    }
-  }
+function List(props){
   return (
-    <>
-      <ul>
-        {list.map((item, idx) => {
-          if (idx >= settingsContext.start && idx <= settingsContext.end) {
-            return (
-              <li
-                className={`complete-${item.complete.toString()}`}
-                key={item._id}
-              >
-                <span onClick={() => modifyList(item._id)}>
-                  {item.text}
-                </span>
-              </li>
-            )
-          }
-        })}
-      </ul>
-      {page > 0 && <button  className="pre-nxt" onClick={prePage}>previous</button>}
-      {!(page == (Math.ceil(listContext.list.length / settingsContext.numberOfItems) - 1)) && <button className="pre-nxt" onClick={nextPage}>Next</button>}
-    </>
-  );
-}
+      props.list.map(item=>(
+      <div key={item.id}>
+        <p>{item.text}</p>
+        <p><small>Assigned to: {item.assignee}</small></p>
+        <p><small>Difficulty: {item.difficulty}</small></p>
+        <div onClick={() =>props.toggleComplete(item.id)}>Complete: {item.complete.toString()}</div>
+        <hr />
+      </div>
+
+  
+ ))
+  )
+  };  
 export default List;
