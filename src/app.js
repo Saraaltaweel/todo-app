@@ -1,11 +1,16 @@
 import React from 'react';
-
 import ToDo from './components/todo/todo';
+import ListContext from './context/SettingContext';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <ToDo />
-    );
-  }
+
+function App() {
+  return (
+    <>
+      <ListContext>
+        <ToDo/>
+      </ListContext>
+    </>
+  );
 }
+
+export default App;
