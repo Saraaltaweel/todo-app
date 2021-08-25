@@ -62,11 +62,11 @@ function List(props) {
               <small>Difficulty: {item.difficulty}</small>
             </p>
             <p>
-            <Auth capability = 'update'>
+            
               <Button  onClick={() => props.toggleComplete(item.id)}>
                 Complete: {item.complete.toString()}
               </Button>
-              </Auth>
+              
             </p>
             <hr />
           </div>

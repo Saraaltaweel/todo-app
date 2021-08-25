@@ -10,9 +10,13 @@ export const AuthContext = React.createContext();
 function AuthSettings(props) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState({});
+  const [token, setToken] = useState(null);
+  const [capabilities, setCapabilities] = useState(null);
 
   useEffect(() => {
     const token = cookie.load('auth');
+    const acl = cookie.load('acl');
+    setCapabilities(acl);
     validToken(token);
   },[]);
 
@@ -20,6 +24,7 @@ function AuthSettings(props) {
     cookie.save('auth', token);
     setLoggedIn(loggedIn);
     setUser(user);
+    setToken(token);
   };
 
   function validToken(token) {
@@ -37,6 +42,9 @@ function AuthSettings(props) {
       const response = await superagent.post(`${API}/signin`)
         .set('authorization', `Basic ${base64.encode(`${username}:${password}`)}`);
       console.log(response.body);
+      const acl = response.body.user.acl.capabilities;
+      cookie.save('acl', acl);
+      setCapabilities(acl);
       validToken(response.body.token);
     } catch (error) {
       console.error('Login Error', error.message);
@@ -45,10 +53,26 @@ function AuthSettings(props) {
 
   function logout() {
     setLoginState(false, null, {});
+    cookie.remove('auth');
+    cookie.remove('acl');
+    setCapabilities(null);
   };
-
+  async function signup(username, password, email, role){
+    try {
+      const user = {
+        username,
+        password,
+        email,
+        role
+      };
+      const response = await superagent.post(`${API}/signup`, user);
+      validToken(response.body.user.token);
+    } catch (error) {
+      console.error('Singup Error', error.message);
+    }
+  }
   return (
-    <AuthContext.Provider value = {{ loggedIn: loggedIn, user, login: login, logout: logout }}>
+    <AuthContext.Provider value = {{ loggedIn: loggedIn, user, login: login, logout: logout, signup: signup }}>
       {props.children}
     </AuthContext.Provider>
   );
