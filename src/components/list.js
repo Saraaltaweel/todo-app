@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Button } from '@blueprintjs/core';
 import { ListContext } from '../context/SettingContext';
 import {v4 as uuid} from 'uuid'
-
+import Auth from '../context/auth'
 function List(props) {
   const settings = useContext(ListContext);
   const [activePage, setActivePage] = useState(1);
@@ -62,11 +62,11 @@ function List(props) {
               <small>Difficulty: {item.difficulty}</small>
             </p>
             <p>
-          
+            <Auth capability = 'update'>
               <Button  onClick={() => props.toggleComplete(item.id)}>
                 Complete: {item.complete.toString()}
               </Button>
-         
+              </Auth>
             </p>
             <hr />
           </div>

@@ -1,7 +1,7 @@
 import '@blueprintjs/core/lib/css/blueprint.css';
 import { Card, Button, H5 ,Tooltip} from "@blueprintjs/core";
 import useForm from '../hooks/form';
-
+import Auth from '../context/auth'
 function FormInfo(props){
  
     return(
@@ -33,7 +33,7 @@ function FormInfo(props){
             textAlign:'center',borderRadius:'7px',width:'180px',height:'20px'
         }}  onChange={props.handleChange} defaultValue={3} type="range" min={1} max={5} name="difficulty" />
         </label>
-
+        <Auth capability = 'delete'>
         <label>
           <button style={{
              display: 'inline-block',
@@ -50,6 +50,7 @@ function FormInfo(props){
              boxShadow: '0 5px #999',
         }} type="submit">Add Item</button>
         </label>
+        </Auth>
       </form>
       
     )
