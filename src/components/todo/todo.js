@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState,useContext} from 'react';
 import {Navbar, Button, Alignment} from '@blueprintjs/core';
 import { v4 as uuid } from 'uuid';
 import useForm from '../../hooks/form';
@@ -45,7 +45,7 @@ const ToDo = () => {
       <header style={{
             textAlign:'center', padding: 30,backgroundColor:'gray',color:'#F4DADA',borderRadius:'10px'
         }}>
-        <h1>To Do List: {incomplete} items pending</h1>
+          <h1>To Do List: {incomplete} items pending</h1>
       </header>
       <SettingsForm />
       <FormInfo className = 'split' handleChange = {handleChange} handleSubmit = {handleSubmit} />
