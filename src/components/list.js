@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Button } from '@blueprintjs/core';
 import { ListContext } from '../context/SettingContext';
+import {v4 as uuid} from 'uuid'
 
 function List(props) {
   const settings = useContext(ListContext);
@@ -16,11 +17,11 @@ function List(props) {
 
   const PagesList = () => {
     const pages = [];
-    if(activePage > 1) pages.push(<Button className = 'usual bp3-intent-primary' onClick = {() => changePage(activePage -1)}>Previous</Button>);
+    if(activePage > 1) pages.push(<Button key={uuid()} className = 'usual bp3-intent-primary' onClick = {() => changePage(activePage -1)}>Previous</Button>);
     for(let i = 1; i <= numOfPages; i++){
       pages.push(<Button className = 'usual' onClick = {() => changePage(i)} key = {i}>{i}</Button>);
     }
-    if(activePage < numOfPages) pages.push(<Button className = 'usual bp3-intent-primary' onClick = {() => changePage(activePage +1)}>Next</Button>);
+    if(activePage < numOfPages) pages.push(<Button key={uuid()} className = 'usual bp3-intent-primary' onClick = {() => changePage(activePage +1)}>Next</Button>);
     return pages;
   };
 
@@ -48,11 +49,11 @@ function List(props) {
   },[props.list]);
 
   return (
-    <div className = 'split right'>
+    <div>
       <>
        
         {activeList.map((item) => (
-          <div className = 'list' key={item.id}>
+          <div key={item.id}>
             <p>{item.text}To Do Item</p>
             <p>
               <small>Assigned to: {item.assignee}</small>
@@ -61,9 +62,11 @@ function List(props) {
               <small>Difficulty: {item.difficulty}</small>
             </p>
             <p>
+          
               <Button  onClick={() => props.toggleComplete(item.id)}>
                 Complete: {item.complete.toString()}
               </Button>
+         
             </p>
             <hr />
           </div>

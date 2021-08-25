@@ -1,7 +1,11 @@
 import '@blueprintjs/core/lib/css/blueprint.css';
 import { Card, Button, H5 ,Tooltip} from "@blueprintjs/core";
+import useForm from '../hooks/form';
+
 function FormInfo(props){
+ 
     return(
+
 
     <form onSubmit={props.handleSubmit}>
 
@@ -47,6 +51,7 @@ function FormInfo(props){
         }} type="submit">Add Item</button>
         </label>
       </form>
+      
     )
 }
 export default FormInfo;

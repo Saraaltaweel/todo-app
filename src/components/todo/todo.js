@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
+import {Navbar, Button, Alignment} from '@blueprintjs/core';
 import { v4 as uuid } from 'uuid';
 import useForm from '../../hooks/form';
 import FormInfo from '../formInfo';
 import List from '../list';
+import SettingsForm from './settingForm';
 
 
 const ToDo = () => {
@@ -19,7 +21,6 @@ const ToDo = () => {
       difficulty: item.difficulty,
       complete: false,
     };
-    console.log(data);
     setList([...list, data]);
   }
 
@@ -46,6 +47,7 @@ const ToDo = () => {
         }}>
         <h1>To Do List: {incomplete} items pending</h1>
       </header>
+      <SettingsForm />
       <FormInfo className = 'split' handleChange = {handleChange} handleSubmit = {handleSubmit} />
       <List className = 'split' toggleComplete = {toggleComplete} list = {list}/>
     </>
