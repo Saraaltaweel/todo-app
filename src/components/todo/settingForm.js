@@ -14,9 +14,9 @@ function SettingsForm(props) {
           <InputGroup style={{
         textAlign:'center'}} onChange = {settings.handleItemsChange} type="text" value = {settings.items} name = 'items'/>
         </label>
-        <Auth capability = 'delete'>
+        
         <Button type = 'submit'>Change</Button>
-        </Auth>
+        
       </form>
     </div>
   );

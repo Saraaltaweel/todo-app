@@ -30,7 +30,7 @@ function Login() {
       </Then>
       <Else>
         <form style={{
-            padding: '200px', paddingTop: '16px', margin:'20px',marginLeft:'270px',border:'black solid',width:'50vw',backgroundColor:'lightpink'
+            padding: '200px', paddingTop: '16px', margin:'20px',marginLeft:'270px',borderRadius:'15px',width:'50vw',backgroundColor:'#F0D9FF'
         }} onSubmit={handleSubmit}>
         <br/><b>Username  </b><input 
             type="text"
@@ -60,8 +60,24 @@ function Login() {
              borderRadius: '15px',
              boxShadow: '0 5px #999',
              marginTop:'10px',
-             marginLeft:'115px'
+             marginLeft:'100px'
         }}>Login</button>
+        <a style={{
+             display: 'inline-block',
+             padding: '15px 15px',
+             fontSize: '20px',
+             cursor: 'pointer',
+             textAlign: 'center',
+             textDecoration: 'none',
+             outline: 'none',
+             color: 'gray',
+             backgroundColor: 'lightblue',
+             border: 'none',
+             borderRadius: '15px',
+             boxShadow: '0 5px #999',
+             marginTop:'10px',
+             marginLeft:'10px'
+        }} href="/signup">signup</a>
         </form>
       </Else>
     </If>

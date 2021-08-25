@@ -5,15 +5,36 @@ import useForm from '../../hooks/form';
 import FormInfo from '../formInfo';
 import List from '../list';
 import SettingsForm from './settingForm';
-
+import superagent from 'superagent';
+import cookie from 'react-cookies';
 
 const ToDo = () => {
 
   const [list, setList] = useState([]);
   const [incomplete, setIncomplete] = useState([]);
   const { handleChange, handleSubmit } = useForm(addItem);
+  const API = 'https://api-js401.herokuapp.com/api/v1/todo';
 
-  function addItem(item) {
+  async function getData(){
+    const response = await superagent.get(API);
+    setList(response.body.results);
+    console.log(response.body.results);
+  }
+  useEffect(() => {
+    getData();
+  },[]);
+
+  async function deleteItem(id) {
+      const token = cookie.load('auth');
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+      let response = await superagent.delete(`${API}/${id}`, config);
+      response = list.filter( item => item._id !== id );
+      setList(response);
+  } 
+
+  async function addItem(item) {
     const data = {
       id: uuid(),
       text: item.text,
@@ -21,16 +42,20 @@ const ToDo = () => {
       difficulty: item.difficulty,
       complete: false,
     };
-    setList([...list, data]);
+    const value = await superagent.post(API, data);
+    setList([...list, value]);
   }
 
-  function toggleComplete(id) {
+  async function toggleComplete(id) {
+    let itemNeedUpdate;
     const items = list.map( item => {
       if ( item.id === id ) {
         item.complete = !item.complete;
+        itemNeedUpdate = item;
       }
       return item;
     });
+    await superagent.put(`${API}/${id}`, itemNeedUpdate);
     setList(items);
   }
 
